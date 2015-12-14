@@ -1,6 +1,14 @@
 <?php
+require_once '.php/EasyRdf.php';
 
-$sidebar = ''; // TODO
+$graph = new EasyRdf_Graph();
+foreach (new DirectoryIterator(dirname(__FILE__)) as $dir_entry) {
+  if ($dir_entry->getExtension() == 'ttl') {
+    $graph->parseFile($dir_entry->getPathname());
+  }
+}
+
+$sidebar = ''; // TODO: construct TOC
 
 if (preg_match('|^/([0-9A-Za-z&-]+)$|', $_SERVER['REQUEST_URI'], $matches) &&
     file_exists($matches[1] . '.ttl')) {
